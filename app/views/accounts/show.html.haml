@@ -5,6 +5,11 @@
 
   %h2{:id => dom_id(account, :name)}= render :partial => "accounts/name"
 
+  - if @page > 0
+    = link_to "&laquo Prev Page", account_path(@account, :page => @page - 1)
+
   %table.entries
     = render :partial => "events/balance", :locals => { :container => account }
     = render(@items)
+  - if @more_pages
+    = link_to "Next Page &raquo;", account_path(@account, :page => @page + 1)

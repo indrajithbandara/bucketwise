@@ -11,6 +11,7 @@ class AccountsController < ApplicationController
   end
 
   def show
+    @account = account
     respond_to do |format|
       format.html do
         @page = (params[:page] || 0).to_i
