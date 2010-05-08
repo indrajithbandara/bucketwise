@@ -2,6 +2,9 @@
 
   %td.date= event.occurred_on.strftime("%Y-%m-%d")
 
+  %td.reconciled
+    - if viewed_account
+      = event.cleared_on_account(viewed_account) ? "&#x2713;" : ""
   %td
     .nubbin{:id => dom_id(event, :nubbin), :style => "display: none"}
       = link_to_function("&#x270e;", "Events.edit(#{edit_event_path(event).to_json})")

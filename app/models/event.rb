@@ -55,6 +55,15 @@ class Event < ActiveRecord::Base
     end
   end
 
+  # for an event to be cleared w/r/t an account: 
+  #  - the line_items with that account can all be "credit_options" or "aside" (expense aside)
+  #  - the account_item for that account can have an amount of 0 (reallocation)
+  #  - the statemennt for that account can be non-nil
+  def cleared_on_account(checked_account)
+    account_item = account_items.detect { |a| a.account == checked_account }
+    account_item.line_items.all? { |li| ["credit_options", "aside"].include?(li.role) } or account_item.amount == 0 or not account_item.statement.nil?
+  end
+
   def account_for(role)
     role = role.to_s
     item = line_items.detect { |item| item.role == role }

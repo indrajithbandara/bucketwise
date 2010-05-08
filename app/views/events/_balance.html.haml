@@ -4,7 +4,7 @@
     %th Ending balance
   - else
     %th.date= Date.today.strftime("%Y-%m-%d")
-    %th Current balance
+    %th{:colspan => 2} Current balance
   %th.number.total.balance{:colspan => 2}= balance_cell(container, :tag => "span", :id => "balance")
 %tr.spacer
   %td{:colspan => 4}

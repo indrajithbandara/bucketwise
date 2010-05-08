@@ -266,6 +266,10 @@ td.number, th.number {
   white-space: nowrap;
 }
 
+td.reconciled { 
+  width: 1px;
+}
+
 span.real_balance {
   font-size: 80%;
   color: #999;

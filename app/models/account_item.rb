@@ -12,6 +12,8 @@ class AccountItem < ActiveRecord::Base
   belongs_to :account
   belongs_to :statement
 
+  has_many :line_items, :through => :event, :conditions => 'account_id = #{account.id}'
+
   after_create :increment_balance
   before_destroy :decrement_balance
 
