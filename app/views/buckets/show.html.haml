@@ -8,7 +8,28 @@
 
   %h2{:id => dom_id(bucket, :name)}
     = render :partial => "buckets/bucket_name_for_perma", :locals => { :bucket => bucket }
+  
+  
+  = link_to_function "Historical Analysis", :id => "filter_nubbin" do |page|
+    - page[:analysis_table].toggle
 
+  %table.analysis#analysis_table{:style => "display: none;"}
+    %tr
+      %th Month
+      %th.number Expenses
+      %th.number Deposits
+      %th.number Reallocations
+      %th.number Net
+    - @past_months_items.each_with_index do |items, m|
+      %tr{:class => cycle('odd', 'even')}
+        %td= m.months.ago.strftime("%y %b")
+        %td.number= format_amount(items.expenses.map(&:amount).sum)
+        %td.number= format_amount(items.deposits.map(&:amount).sum)
+        - reallocs = items.reallocations.map(&:amount).sum
+        %td.number{:class => "#{reallocs < 0 ? 'negative' : ''}"}= format_amount(reallocs)
+        - balance = items.map(&:amount).sum
+        %td.number{:class => "#{balance < 0 ? 'negative' : ''}"}
+          = format_amount(balance)
   %table.entries
     = render :partial => "events/balance", :locals => { :container => bucket }
     = render(@items)

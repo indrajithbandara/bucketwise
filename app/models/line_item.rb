@@ -30,6 +30,12 @@ class LineItem < ActiveRecord::Base
   after_create :increment_bucket_balance
   before_destroy :decrement_bucket_balance
 
+  named_scope :expenses, :conditions => ["role in (?)", ['payment_source', 'transfer_from', 'credit_options']]
+  named_scope :deposits, :conditions => ["role in (?)", ['deposit', 'transfer_to']]
+  named_scope :reallocations, :conditions => ["role in (?)", %w(primary aside reallocate_from reallocate_to)]
+  named_scope :on_or_after, lambda { |date| { :conditions => ["occurred_on >= ?", date.to_date] } }
+  named_scope :on_or_before, lambda { |date| { :conditions => ["occurred_on <= ?", date.to_date] } }
+
   def to_xml(options={})
     options[:except] = Array(options[:except])
     options[:except].concat [:event_id, :occurred_on, :id]

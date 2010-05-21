@@ -17,6 +17,10 @@ class BucketsController < ApplicationController
   def show
     respond_to do |format|
       format.html do
+        @past_months_items = []
+        12.times do |i|
+          @past_months_items << @bucket.line_items.on_or_after(i.months.ago.at_beginning_of_month).on_or_before(i.months.ago.at_end_of_month)
+        end
         @page = (params[:page] || 0).to_i
         @more_pages, @items = bucket.line_items.page(@page)
       end
